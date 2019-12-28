@@ -24,7 +24,7 @@ and push, pushed, pull and close methods. For further information read the doc
 strings of the TagNode class.
 """
 import re
-import cgi
+import html
 
 try:
     from django.utils.translation import ugettext as _
@@ -129,7 +129,7 @@ class VariableScope(dict):
         
     def resolve(self, context):
         context = context.strip('"')
-        for var, value in dict.iteritems(self):
+        for var, value in dict.items(self):
             context = context.replace('$%s$' % var, value)
         return context
     
@@ -289,7 +289,7 @@ class TextNode(Node):
         """
         Return cgi-escaped content
         """
-        return cgi.escape(self.variables.resolve(self.text))
+        return html.escape(self.variables.resolve(self.text))
     
     def __str__(self):
         return 'TextNode: %r' % self.text
@@ -383,7 +383,7 @@ class MultiArgumentTagNode(TagNode):
         
     def __str__(self):
         args = []
-        for key, value in self.arguments.iteritems():
+        for key, value in self.arguments.items():
             args.append('%s: %s' % (key, value))
         return '%s (%s)' % (self.__class__.__name__, ', '.join(args))
         
